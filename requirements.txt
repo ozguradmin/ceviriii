@@ -1,0 +1,6 @@
+Flask==3.0.3
+flask-cors==4.0.0
+google-generativeai==0.8.2
+fonttools==4.53.1
+requests==2.32.3
+gunicorn==21.2.0

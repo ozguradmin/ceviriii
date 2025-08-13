@@ -1,0 +1,5 @@
+[build]
+  command = ""
+  publish = "static"
+
+# Not: Flask sunucusu statik barındırma ile çalışmaz; arka ucu Render/Heroku/Docket tabanlı bir servise deploy edin ve API_BASE değişkeni ile yönlendirin.
