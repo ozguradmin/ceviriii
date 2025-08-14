@@ -18,5 +18,7 @@ COPY . .
 ENV PORT=5001
 RUN mkdir -p /app/uploads /app/static/outputs /app/fonts
 
-CMD ["gunicorn", "app:app", "--bind", "0.0.0.0:${PORT}", "--workers", "2", "--threads", "4"]
+# Render, çalışma anında PORT'u enjekte eder. Exec formda env değişkeni genişlemediği için
+# shell form (sh -c) kullanıyoruz.
+CMD ["sh", "-c", "gunicorn app:app --bind 0.0.0.0:$PORT --workers 2 --threads 4"]
 
