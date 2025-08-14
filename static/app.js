@@ -107,6 +107,7 @@ $(document).ready(function() {
     let currentVideoPath = ""; // İşlenmiş video yolunu saklamak için
 
     function checkStatus(taskId) {
+        var failures = 0;
         var interval = setInterval(function() {
             $.ajax({
                 url: api('/status/' + taskId),
@@ -145,9 +146,12 @@ $(document).ready(function() {
                     }
                 },
                 error: function() {
-                    clearInterval(interval); // Sorgulamayı durdur
-                    handleError("Görev durumu kontrol edilirken sunucuyla iletişim kesildi.");
-                    $('#submit-btn').prop('disabled', false).text('Tekrar Dene');
+                    failures += 1;
+                    if (failures >= 5) {
+                        clearInterval(interval);
+                        handleError("Görev durumu kontrol edilirken sunucuyla iletişim kesildi.");
+                        $('#submit-btn').prop('disabled', false).text('Tekrar Dene');
+                    }
                 }
             });
         }, 2000); // Her 2 saniyede bir durumu kontrol et

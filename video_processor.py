@@ -371,7 +371,8 @@ def altyazilari_videoya_ekle(video_yolu, altyazilar_data, output_folder, color_m
     command = [
         'ffmpeg',
         '-i', video_yolu,
-        '-vf', vf_filter
+        '-vf', vf_filter,
+        '-threads', '1'
     ]
     if fps:
         command += ['-r', str(int(fps))]
@@ -379,7 +380,7 @@ def altyazilari_videoya_ekle(video_yolu, altyazilar_data, output_folder, color_m
         '-c:v', 'libx264',
         '-preset', 'ultrafast',
         '-crf', str(int(crf)),
-        '-threads', '2',
+        '-threads', '1',
         '-movflags', '+faststart',
         '-c:a', 'copy',
         '-y',

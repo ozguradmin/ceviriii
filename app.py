@@ -105,6 +105,10 @@ def process_video_task(video_path, task_id, style_options, font_path=None): # fo
 
     except Exception as e:
         tasks[task_id] = {'status': 'error', 'message': str(e)}
+        try:
+            print('Process task error:', e)
+        except Exception:
+            pass
 
 
 @app.route('/')
@@ -287,6 +291,10 @@ def reprocess_video_task(video_path, subtitles, color_map, font_path, has_backgr
         }
     except Exception as e:
         tasks[task_id] = {'status': 'error', 'message': str(e)}
+        try:
+            print('Reprocess task error:', e)
+        except Exception:
+            pass
 
 
 @app.route('/api/host', methods=['GET'])

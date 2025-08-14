@@ -20,5 +20,5 @@ RUN mkdir -p /app/uploads /app/static/outputs /app/fonts
 
 # Render, çalışma anında PORT'u enjekte eder. Exec formda env değişkeni genişlemediği için
 # shell form (sh -c) kullanıyoruz.
-CMD ["sh", "-c", "gunicorn app:app --bind 0.0.0.0:$PORT --workers 2 --threads 4"]
+CMD ["sh", "-c", "gunicorn app:app --bind 0.0.0.0:$PORT --workers 1 --threads 1 --timeout 900 --keep-alive 5"]
 
