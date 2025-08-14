@@ -17,22 +17,13 @@ try:
 except Exception:
     pass
 
-# API anahtarları listesi (ENV üzerinden override edilebilir)
+# API anahtarları listesi yalnızca çevre değişkenlerinden okunur (üretim güvenliği)
 ENV_KEYS = os.environ.get('GEMINI_API_KEYS') or os.environ.get('GOOGLE_API_KEYS') or ''
 if ENV_KEYS.strip():
     API_KEYS = [k.strip() for k in ENV_KEYS.replace('\n', ',').split(',') if k.strip()]
 else:
-    API_KEYS = [
-        "AIzaSyAE3oQi4Zwb7YBiJ2zX5K3HcogcJxwpH9g",
-        "AIzaSyBkGFGkPtUIJV07dolTA61iDCVCX8Satl4",
-        "AIzaSyCcu5GLciG4rdT8FftRnk7NKS06qaehn8Q",
-        "AIzaSyDIstqqMAlS1EGHZCBWvy98ueqejrHN8C4",
-        "AIzaSyB8pRKjomrBkKELh-cDtuD8sqzFflwUdoA",
-        "AIzaSyAYN0kchg5scMw0Xn0BxM-t51XhqAaN3Jc",
-        "AIzaSyA22fyewqngWsO82oY8zQQe_FtcbQeZ2TI",
-        "AIzaSyBmYob9OQoE0IyMzdzpzExKip6nwWwf6mk",
-        "AIzaSyB1dK2TDgEc6bSyMe_KpE5kZWf8tSubCX4"
-    ]
+    # Üretimde zorunlu: anahtar verilmemişse net bir mesaj ile hata ver
+    API_KEYS = []
 aktif_api_key_index = 0
 
 def run_ffmpeg_command(command):
@@ -447,6 +438,8 @@ def _split_long_sentences(entries: list, max_chars_per_entry: int = 90) -> list:
 def gemini_altyazi_olustur(ses_dosya_yolu):
     """Gemini API'sini kullanarak sesten altyazı verisi oluşturur."""
     global aktif_api_key_index
+    if not API_KEYS:
+        raise Exception("GEMINI_API_KEYS çevre değişkeni ayarlanmadı. Lütfen Render/Vercel/yerel ortamınızda GEMINI_API_KEYS=key1,key2 şeklinde tanımlayın.")
     while aktif_api_key_index < len(API_KEYS):
         api_key = API_KEYS[aktif_api_key_index]
         try:
